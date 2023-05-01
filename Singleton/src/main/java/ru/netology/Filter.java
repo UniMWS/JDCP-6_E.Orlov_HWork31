@@ -12,13 +12,11 @@ public class Filter {
 
     public List<Integer> filterOut(List<Integer> list) {
         Logger logger = Logger.getInstance();
-        List<Integer> result = new ArrayList<>();
-        for (Integer integer : list) {
-            if (integer < treshold) {
-                logger.log("Элемент " + integer + " проходит");
-                result.add(integer);
-            } else logger.log("Элемент " + integer + " не проходит");
-        }
+        List<Integer> result = list.stream()
+                .peek(integer -> logger.log("Элемент " + integer
+                        + (integer >= treshold ? " не проходит" : " проходит")))
+                .filter(integer -> integer < treshold)
+                .toList();
         logger.log("Прошло фильтр " + result.size() + " элемента из " + list.size());
         logger.log("Выводим результат на экран");
         return result;
